@@ -183,8 +183,18 @@ create_hotfix() {
     fi
     
     echo -e "${YELLOW}Criando hotfix/$version...${NC}"
-    git checkout main 2>/dev/null || git checkout master
-    git checkout -b "hotfix/$version"
+    
+    # Verificar e mudar para main/master
+    if git checkout main 2>/dev/null || git checkout master; then
+        git checkout -b "hotfix/$version" || {
+            echo -e "${RED}Erro ao criar hotfix branch!${NC}"
+            return
+        }
+    else
+        echo -e "${RED}Erro ao mudar para main/master!${NC}"
+        return
+    fi
+    
     echo -e "${GREEN}Hotfix criado! Você está em hotfix/$version${NC}"
 }
 

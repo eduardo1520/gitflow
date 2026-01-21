@@ -73,7 +73,7 @@ git push origin --tags
 
 ```bash
 # Após push, fazer deploy da tag v1.2.1
-git checkout v1.2.1
+git checkout tags/v1.2.1
 # ... processo de deploy ...
 ```
 
