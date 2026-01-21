@@ -39,8 +39,23 @@ create_feature() {
     fi
     
     echo -e "${YELLOW}Criando feature/$feature_name...${NC}"
-    git checkout develop
-    git checkout -b "feature/$feature_name"
+    
+    # Verificar se develop existe
+    if ! git show-ref --verify --quiet refs/heads/develop; then
+        echo -e "${RED}Branch develop não existe! Criando...${NC}"
+        git checkout -b develop
+    fi
+    
+    git checkout develop || {
+        echo -e "${RED}Erro ao mudar para branch develop!${NC}"
+        return
+    }
+    
+    git checkout -b "feature/$feature_name" || {
+        echo -e "${RED}Erro ao criar feature branch!${NC}"
+        return
+    }
+    
     echo -e "${GREEN}Feature criada! Você está em feature/$feature_name${NC}"
 }
 
@@ -59,13 +74,22 @@ finish_feature() {
     echo "Finalizando feature: $feature_name"
     
     # Merge em develop
-    git checkout develop
-    git merge --no-ff "$current_branch" -m "Merge feature/$feature_name into develop"
+    git checkout develop || {
+        echo -e "${RED}Erro ao mudar para develop!${NC}"
+        return
+    }
     
-    # Deletar branch
-    git branch -d "$current_branch"
-    
-    echo -e "${GREEN}Feature finalizada e mesclada em develop!${NC}"
+    if git merge --no-ff "$current_branch" -m "Merge feature/$feature_name into develop"; then
+        # Deletar branch apenas se merge foi bem sucedido
+        git branch -d "$current_branch"
+        echo -e "${GREEN}Feature finalizada e mesclada em develop!${NC}"
+    else
+        echo -e "${RED}Erro ao fazer merge! Resolva os conflitos e finalize manualmente.${NC}"
+        echo "Comandos para continuar:"
+        echo "  git add <arquivos-resolvidos>"
+        echo "  git commit"
+        echo "  git branch -d $current_branch"
+    fi
 }
 
 # Criar release
@@ -79,8 +103,23 @@ create_release() {
     fi
     
     echo -e "${YELLOW}Criando release/$version...${NC}"
-    git checkout develop
-    git checkout -b "release/$version"
+    
+    # Verificar se develop existe
+    if ! git show-ref --verify --quiet refs/heads/develop; then
+        echo -e "${RED}Branch develop não existe!${NC}"
+        return
+    fi
+    
+    git checkout develop || {
+        echo -e "${RED}Erro ao mudar para branch develop!${NC}"
+        return
+    }
+    
+    git checkout -b "release/$version" || {
+        echo -e "${RED}Erro ao criar release branch!${NC}"
+        return
+    }
+    
     echo -e "${GREEN}Release criada! Você está em release/$version${NC}"
 }
 
@@ -99,22 +138,38 @@ finish_release() {
     echo "Finalizando release: $version"
     
     # Merge em main
-    git checkout main 2>/dev/null || git checkout master
-    git merge --no-ff "$current_branch" -m "Release $version"
-    git tag -a "v$version" -m "Release $version"
+    if git checkout main 2>/dev/null || git checkout master; then
+        if git merge --no-ff "$current_branch" -m "Release $version"; then
+            git tag -a "v$version" -m "Release $version" || {
+                echo -e "${RED}Erro ao criar tag!${NC}"
+                return
+            }
+        else
+            echo -e "${RED}Erro ao fazer merge em main! Resolva conflitos manualmente.${NC}"
+            return
+        fi
+    else
+        echo -e "${RED}Erro ao mudar para main/master!${NC}"
+        return
+    fi
     
     # Merge em develop
-    git checkout develop
-    git merge --no-ff "$current_branch" -m "Merge release $version into develop"
+    git checkout develop || {
+        echo -e "${RED}Erro ao mudar para develop!${NC}"
+        return
+    }
     
-    # Deletar branch
-    git branch -d "$current_branch"
-    
-    echo -e "${GREEN}Release finalizada!${NC}"
-    echo -e "${YELLOW}Lembre-se de fazer push:${NC}"
-    echo "  git push origin develop"
-    echo "  git push origin main"
-    echo "  git push origin --tags"
+    if git merge --no-ff "$current_branch" -m "Merge release $version into develop"; then
+        # Deletar branch apenas se tudo foi bem sucedido
+        git branch -d "$current_branch"
+        echo -e "${GREEN}Release finalizada!${NC}"
+        echo -e "${YELLOW}Lembre-se de fazer push:${NC}"
+        echo "  git push origin develop"
+        echo "  git push origin main"
+        echo "  git push origin --tags"
+    else
+        echo -e "${RED}Erro ao fazer merge em develop! Resolva conflitos manualmente.${NC}"
+    fi
 }
 
 # Criar hotfix
@@ -148,22 +203,38 @@ finish_hotfix() {
     echo "Finalizando hotfix: $version"
     
     # Merge em main
-    git checkout main 2>/dev/null || git checkout master
-    git merge --no-ff "$current_branch" -m "Hotfix $version"
-    git tag -a "v$version" -m "Hotfix $version"
+    if git checkout main 2>/dev/null || git checkout master; then
+        if git merge --no-ff "$current_branch" -m "Hotfix $version"; then
+            git tag -a "v$version" -m "Hotfix $version" || {
+                echo -e "${RED}Erro ao criar tag!${NC}"
+                return
+            }
+        else
+            echo -e "${RED}Erro ao fazer merge em main! Resolva conflitos manualmente.${NC}"
+            return
+        fi
+    else
+        echo -e "${RED}Erro ao mudar para main/master!${NC}"
+        return
+    fi
     
     # Merge em develop
-    git checkout develop
-    git merge --no-ff "$current_branch" -m "Merge hotfix $version into develop"
+    git checkout develop || {
+        echo -e "${RED}Erro ao mudar para develop!${NC}"
+        return
+    }
     
-    # Deletar branch
-    git branch -d "$current_branch"
-    
-    echo -e "${GREEN}Hotfix finalizado!${NC}"
-    echo -e "${YELLOW}Lembre-se de fazer push:${NC}"
-    echo "  git push origin develop"
-    echo "  git push origin main"
-    echo "  git push origin --tags"
+    if git merge --no-ff "$current_branch" -m "Merge hotfix $version into develop"; then
+        # Deletar branch apenas se tudo foi bem sucedido
+        git branch -d "$current_branch"
+        echo -e "${GREEN}Hotfix finalizado!${NC}"
+        echo -e "${YELLOW}Lembre-se de fazer push:${NC}"
+        echo "  git push origin develop"
+        echo "  git push origin main"
+        echo "  git push origin --tags"
+    else
+        echo -e "${RED}Erro ao fazer merge em develop! Resolva conflitos manualmente.${NC}"
+    fi
 }
 
 # Listar branches

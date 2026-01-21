@@ -72,8 +72,8 @@ git push origin --tags
 ### 7. Deploy em Produção
 
 ```bash
-# Após push, fazer deploy da tag 1.2.1
-git checkout 1.2.1
+# Após push, fazer deploy da tag v1.2.1
+git checkout v1.2.1
 # ... processo de deploy ...
 ```
 
