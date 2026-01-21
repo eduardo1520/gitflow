@@ -304,7 +304,13 @@ git commit -m "docs: atualiza README com exemplos"
 
 ## Exemplos
 
-### Exemplo 1: Adicionar Feature de Login
+Confira a pasta [exemplos/](exemplos/) para tutoriais detalhados:
+
+- **[Feature Completa](exemplos/01-feature-completa.md)** - Workflow completo de desenvolvimento de uma feature
+- **[Release](exemplos/02-release.md)** - Como preparar e lançar uma nova versão
+- **[Hotfix](exemplos/03-hotfix.md)** - Corrigir bugs críticos em produção
+
+### Exemplo Rápido: Feature
 
 ```bash
 # Criar feature
@@ -317,35 +323,6 @@ git commit -m "feat: implementa tela de login"
 
 # Finalizar
 git flow feature finish user-login
-```
-
-### Exemplo 2: Release v1.0.0
-
-```bash
-# Criar release
-git flow release start 1.0.0
-
-# Atualizar versão
-echo "1.0.0" > VERSION
-git commit -am "chore: bump version to 1.0.0"
-
-# Finalizar
-git flow release finish 1.0.0 -m "Release 1.0.0"
-git push origin develop main --tags
-```
-
-### Exemplo 3: Hotfix Urgente
-
-```bash
-# Criar hotfix
-git flow hotfix start 1.0.1
-
-# Corrigir
-git commit -am "fix: corrige falha de segurança"
-
-# Finalizar
-git flow hotfix finish 1.0.1 -m "Hotfix 1.0.1"
-git push origin develop main --tags
 ```
 
 ## Diagrama do Fluxo
@@ -361,6 +338,17 @@ develop   ●─●─●─●───●─●─●─●───●─●�
 ```
 
 ## Recursos Adicionais
+
+### 📚 Documentação do Projeto
+
+- **[Guia Rápido](GUIA-RAPIDO.md)** - Referência rápida para uso diário
+- **[Melhores Práticas](MELHORES-PRATICAS.md)** - Boas práticas detalhadas
+- **[Cartão de Referência](CARTAO-REFERENCIA.md)** - Comandos essenciais
+- **[Exemplos Práticos](exemplos/)** - Tutoriais passo a passo
+- **[Como Contribuir](CONTRIBUTING.md)** - Guia de contribuição
+- **[Changelog](CHANGELOG.md)** - Histórico de mudanças
+
+### 🔗 Links Externos
 
 - [Post Original do GitFlow](https://nvie.com/posts/a-successful-git-branching-model/)
 - [GitFlow Cheatsheet](https://danielkummer.github.io/git-flow-cheatsheet/index.pt_BR.html)
