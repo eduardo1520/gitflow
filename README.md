@@ -231,11 +231,13 @@ git branch -a
 git fetch --all --prune
 ```
 
-## Script Auxiliar
+## Scripts Auxiliares
 
-Este projeto inclui um script auxiliar para facilitar operações comuns do GitFlow.
+Este projeto inclui dois scripts para facilitar operações comuns do GitFlow.
 
-### Uso do Script
+### 🚀 gitflow-helper.sh (Requer git-flow instalado)
+
+Script completo que usa comandos `git flow`. Requer git-flow instalado.
 
 ```bash
 # Tornar o script executável
@@ -245,12 +247,31 @@ chmod +x gitflow-helper.sh
 ./gitflow-helper.sh
 ```
 
-O script oferece um menu interativo para:
-- Criar e gerenciar features
-- Criar e gerenciar releases
-- Criar e gerenciar hotfixes
-- Visualizar o status do projeto
+**Funcionalidades:**
+- Menu interativo colorido
+- Gerenciar features, releases e hotfixes
+- Visualizar status do projeto
 - Sincronizar branches
+- Ajuda integrada
+
+### 📝 gitflow-manual.sh (Usa Git nativo)
+
+Script alternativo que usa apenas comandos Git nativos. Não requer git-flow.
+
+```bash
+# Tornar o script executável
+chmod +x gitflow-manual.sh
+
+# Executar o script
+./gitflow-manual.sh
+```
+
+**Funcionalidades:**
+- Criar e finalizar features
+- Criar e finalizar releases
+- Criar e finalizar hotfixes
+- Visualizar status
+- Comandos Git equivalentes
 
 ## Melhores Práticas
 
