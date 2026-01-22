@@ -175,6 +175,17 @@ Para branches de `release`: `vMAJOR.MINOR.PATCH`
 2.  **MINOR**: Novas features compatíveis.
 3.  **PATCH**: Correções de bugs.
 
+### 📊 Visualizando o Histórico (Gráfico)
+Para ver um gráfico bonito dos seus commits e branches diretamente no terminal:
+
+**Comando:** `git log --graph --oneline --all --decorate`
+
+**Dica:** Crie um atalho (alias) para facilitar:
+```bash
+git config --global alias.graph "log --graph --oneline --all --decorate"
+```
+Depois basta rodar: `git graph`
+
 ---
 
 ## 6. Troubleshooting (Solução de Problemas)
