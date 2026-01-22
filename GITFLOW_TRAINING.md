@@ -137,10 +137,20 @@ Explicando o que os scripts fazem por baixo dos panos:
     *   `git push origin staging`
 3.  **PR:** `gh pr create --base main --head <branch> ...`
 
-### `git release-finish`
-1.  **Sync Main:** `git checkout main` -> `git pull`
-2.  **Back-merge:** `git checkout develop` -> `git merge main` -> `git push`
-3.  **Cleanup:** `git branch -d <branch>`
+### ✅ Finalizar Processo de Release/Hotfix
+**Comando:** `git release-finish`
+
+Este comando deve ser rodado **após** o Pull Request ser aprovado e mergeado no GitHub.
+
+**O que ele faz automaticamente:**
+1.  **Sincroniza Main:** Baixa a versão mais recente da `main` (com seu merge).
+2.  **Back-merge Develop:** Atualiza a `develop` com as alterações da `main` (garantindo que correções de hotfix/release voltem para o desenvolvimento).
+3.  **Limpeza:** Deleta a branch de release/hotfix local para manter o ambiente limpo.
+
+> **⚠️ Importante: Quando NÃO usar o `release-finish`?**
+>
+> *   **Features (`feature/*`):** Não execute este comando. Features são mergeadas diretamente na `develop` e morrem lá. O ciclo se encerra no merge do Pull Request da feature.
+> *   **Releases e Hotfixes:** SIM, execute sempre para garantir que a `main` e a `develop` fiquem sincronizadas.
 
 ---
 
