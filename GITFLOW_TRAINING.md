@@ -152,6 +152,21 @@ Este comando deve ser rodado **após** o Pull Request ser aprovado e mergeado no
 > *   **Features (`feature/*`):** Não execute este comando. Features são mergeadas diretamente na `develop` e morrem lá. O ciclo se encerra no merge do Pull Request da feature.
 > *   **Releases e Hotfixes:** SIM, execute sempre para garantir que a `main` e a `develop` fiquem sincronizadas.
 
+### 🛡️ Proteção de Branch (GitHub - Production Grade)
+O hook local (`pre-commit`) ajuda, mas a segurança real de produção é configurada no GitHub.
+
+**Como configurar (Open/Closed Principle):**
+1.  Vá no seu repositório no GitHub.
+2.  Clique em **Settings** > **Branches**.
+3.  Clique em **Add branch protection rule**.
+4.  **Branch name pattern:** `main` (e `develop` também recomendado).
+5.  Marque as opções:
+    *   ✅ **Require a pull request before merging:** Bloqueia pushes diretos. Ninguém entra sem PR.
+    *   ✅ **Require approvals:** Exige que outra pessoa aprove seu código.
+    *   ✅ **Do not allow bypassing the above settings:** Garante que nem administradores burlem a regra.
+
+Isso garante o princípio: **Aberto para extensão (novas branches/PRs), Fechado para modificação direta.**
+
 ---
 
 ## 5. Boas Práticas e Convenções
